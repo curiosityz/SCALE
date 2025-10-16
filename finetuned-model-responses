@@ -1,0 +1,119 @@
+# Supplementary Data: Fine-Tuned Model Responses for Algorithmic Proof-of-Concept
+
+This document contains the full transcripts of the large language model (LLM) responses used for the algorithmic proof-of-concept, as described in Section 4.5 of the manuscript "SCALE: Dialogical Cognition as the Algorithmic Engine of Far Transfer."
+
+The data is organized into three parts, corresponding to the key claims in the paper:
+1.  **Key Findings:** Demonstrations of structural fidelity and principle quality.
+2.  **Cross-Route Transfer:** Demonstrations of transferring a principle from a formal to an empirical domain, including novel insight generation.
+3.  **The Scaffolding Discovery:** A direct comparison of the model's output on the same problem under three different levels of scaffolding.
+
+---
+
+## Part 1: Key Findings (Structural Fidelity & Principle Quality)
+
+These examples demonstrate the model's ability to follow the 5-stage SCALE structure and produce high-quality (12/12 CCSR) principles for formal logic and mathematical problems.
+
+### 1.1 Constraint Satisfaction Impossibility Detection
+
+*   **Prompt:** A client requests a UI with three buttons in a line: A-B-C. Button A must be red, B green, C blue. For accessibility, no two adjacent buttons can have primary colors (red, green, blue). Use SCALE to determine feasibility.
+
+*   **Model Output:**
+    *   **STIMULATE:** Purpose: Validate if the client's UI design constraints are logically possible. Success: A clear "possible" or "impossible" verdict with a logical proof.
+    *   **CLASSIFY:** Route: Formal & Deductive. Key Terms: `Button A`, `Button B`, `Button C`, `Adjacent`, `Primary Color`. Constraints: `Color(A)=Red`, `Color(B)=Green`, `Color(C)=Blue`. `Color(X) != Color(Y)` if `Adjacent(X,Y)`.
+    *   **ANALYZE:**
+        *   [Skeptic]: "Let's test the adjacency constraint. A is adjacent to B. The rule says `Color(A) != Color(B)`. The requirement is `Color(A)=Red` and `Color(B)=Green`. Red and Green are both primary colors. This violates the accessibility rule."
+        *   [Expert]: "The error is more fundamental. The set of required properties {red, green, blue} is identical to the set of forbidden adjacent properties. In a linear arrangement of three items, the middle item (B) is adjacent to both A and C. B must be green. A is red. The rule forbids this. C is blue. The rule forbids this. The constraints are mutually exclusive."
+    *   **LEARN (Principle):** "When the set of required properties for a collection of interconnected items is mutually exclusive with the set of relational constraints governing those connections, the system is impossible to build as specified." (CCSR: 12/12)
+    *   **EVOLVE:** "This principle applies to scheduling. If a team meeting requires Alice, Bob, and Carol, and the relational constraints are 'Alice cannot meet on Mondays,' 'Bob cannot meet on Mondays,' and 'Carol cannot meet on Mondays,' then a Monday meeting is impossible."
+
+### 1.2 Tarski Truth vs. Provability Distinction
+
+*   **Prompt:** Use SCALE to analyze the difference between a statement being true in a model and being provable from axioms.
+
+*   **Model Output:**
+    *   **STIMULATE:** Purpose: Clarify the distinction between semantic truth and syntactic provability in formal systems.
+    *   **CLASSIFY:** Route: Formal & Deductive (Meta-logic).
+    *   **ANALYZE:**
+        *   [Novice]: "If it's true, can't you just prove it?"
+        *   [Expert]: "Not necessarily. 'Truth' is a statement about interpretation in a specific model (e.g., '2+2=4' is true in the standard model of arithmetic). 'Provability' is a statement about syntactic manipulation from a set of axioms. Gödel showed these are not the same."
+    *   **LEARN (Principle):** "The truth of a statement (a semantic property) is evaluated within a specific interpretation or model, while the provability of a statement (a syntactic property) is determined by its derivability from a set of axioms using defined rules of inference. These two concepts are not equivalent." (CCSR: 12/12)
+    *   **EVOLVE:** "This applies to law. A person can be factually innocent (truth in the 'real world' model) but legally guilty based on what is provable from the evidence presented in court (the 'axioms')."
+
+---
+
+## Part 2: Cross-Route Transfer & Novel Insight Generation
+
+This section details the transfer of a principle learned from the Calculus Product Rule to empirical, operational domains.
+
+*   **Source Principle (from Calculus Product Rule):** "The total change in an interacting system is the sum of the marginal impacts of each component's change on the other."
+
+### 2.1 Transfer to Hospital ER Optimization
+
+*   **Target Problem:** "A hospital ER wants to increase patient throughput. They can either decrease the time it takes to see a doctor (Triage Time) or decrease the time a patient spends in a bed after seeing the doctor (Discharge Time). How should they prioritize their efforts?"
+
+*   **Novel Insights Generated by Model:**
+    *   "Focusing only on reducing Triage Time will create a 'bed block' bottleneck. This is the `v(du/dx)` term, where the existing stock of patients (`v`) is affected by the increased rate of new patients (`du/dx`)."
+    *   "Focusing only on reducing Discharge Time creates an 'empty bed' problem. This is the `u(dv/dx)` term, where the existing flow of new patients (`u`) is multiplied by the increased rate of bed availability (`dv/dx`), but if `u` is low, the gain is minimal."
+    *   **Actionable Prediction:** "The optimal strategy is a parallel process: implement **fast-track protocols** to reduce triage time for simple cases while simultaneously having a **concurrent discharge processing** team working to free up beds. This addresses both terms of the equation and will yield the greatest increase in total throughput."
+
+### 2.2 Transfer to Cloud Infrastructure Load Balancing
+
+*   **Target Problem:** "A cloud service is experiencing cascading failures. Service A sends requests to Service B. Engineers have been trying to optimize the latency of each service individually, but the system as a whole is still unstable. Why?"
+
+*   **Novel Insights Generated by Model:**
+    *   "A 'latency bomb' can occur. If Service A's processing time increases but it also processes more items per second, its individual latency might look acceptable. However, this increases the load on downstream Service B. If Service B's rate of change is zero (i.e., it's at max capacity), the accumulated queue from Service A will cause a sudden, catastrophic failure. This is the `v(du/dx)` term exploding when `dv/dx` is zero."
+    *   **Actionable Prediction:** "Do not monitor average service latency alone. The critical metric to monitor is the **product of (items in queue for Service B) and (rate of change of latency for Service A)**. This 'product metric' will predict a latency bomb before it occurs."
+
+### 2.3 Transfer to Rideshare Operations
+
+*   **Target Problem:** "A rideshare company notices that in certain neighborhoods at certain times, a few initial cancellations can lead to a 'cascade' where service availability temporarily collapses. Why does this happen?"
+
+*   **Novel Insights Generated by Model:**
+    *   "A 'cancellation cascade' is a network effect that follows the product rule. The total churn is not just the sum of individual cancellations."
+    *   "When a rider cancels (`du/dx`), it affects the local density of available drivers (`v`). When a driver cancels (`dv/dx`), it affects the local density of waiting riders (`u`)."
+    *   **Actionable Prediction:** "Algorithmic matching failures are the root cause. If the matching algorithm creates a slightly suboptimal match (e.g., a driver 2 minutes further away), it slightly increases the probability of both a driver and rider cancellation. This small initial probability increase, when multiplied across the dense network of other drivers and riders, can trigger a cascade that temporarily depletes a neighborhood of service."
+
+---
+
+## Part 3: The Scaffolding Discovery
+
+This section shows the model's output for the same problem under three different scaffolding levels, demonstrating that metacognitive operations like `Learn` and `Evolve` require explicit prompting.
+
+*   **Shared Problem:** A subscription-based software company is losing customers. Analyze the problem and propose a solution.
+
+### 3.1 Condition 1: Minimal Scaffolding (Plain Problem Statement)
+
+*   **Model Output:**
+    > "Customer churn is a critical issue for subscription businesses. To analyze this, we must first segment the customers who are leaving. Are they new users failing to onboard, or long-term users who no longer see value? We should analyze usage data to identify patterns preceding churn. For example, a drop-off in the use of key features might predict a user is about to cancel. A potential solution is to implement a proactive engagement system. When the system detects a drop in a user's engagement, it could trigger a targeted email with a tutorial for a new feature or an offer for a free month to re-engage them."
+*   **Analysis:** Good, direct analysis. **No metacognitive reflection, no explicit principle extraction.**
+
+### 3.2 Condition 2: Process Scaffolding (XML Tags)
+
+*   **Prompt:** `<problem>A subscription-based software company is losing customers. Analyze the problem and propose a solution.</problem> <meta-cognition>What kind of thinking is needed here?</meta-cognition>`
+
+*   **Model Output:**
+    > `<analysis>`
+    > Customer churn should be treated as a system with feedback loops. First, we must diagnose the root cause. We can segment churn by user cohort to see if the problem is with new user onboarding or veteran user value proposition. We should analyze support tickets and exit surveys for qualitative data.
+    > `</analysis>`
+    > `<meta-cognition>`
+    > This is an Empirical & Inductive reasoning problem. I need to move from specific data (churn numbers, survey responses) to a general hypothesis about the cause. My initial analysis is too solution-focused. I should focus more on the diagnosis first. The key assumption is that churn has a single root cause, which is unlikely. It's probably a combination of factors.
+    > `</meta-cognition>`
+    > `<solution>`
+    > Based on the need for better diagnosis, the solution is not a single intervention but a diagnostic dashboard that tracks churn by cohort, feature usage, and qualitative feedback themes. This allows the company to identify the specific 'why' before building a solution.
+    > `</solution>`
+    > `<learn>`
+    > **Principle:** When you have a problem, you should look at the data to figure out why it's happening. (CCSR: 10/12 - Incomplete, not fully abstracted)
+    > `</learn>`
+*   **Analysis:** The XML tags successfully triggered metacognitive reflection. However, the principle extraction was weak and incomplete without an explicit prompt.
+
+### 3.3 Condition 3: Content Scaffolding (Explicit Prompts)
+
+*   **Prompt:** A subscription-based software company is losing customers. Analyze the problem. LEARN: What is the general principle here? EVOLVE: How would this apply to a different domain, like employee turnover?
+
+*   **Model Output:**
+    > **Analysis:** The problem is customer churn. This is a symptom, not a root cause. An effective analysis requires diagnosing the underlying system dynamics. We must first segment the data: Are new or old customers leaving? Power users or casual users? What behaviors correlate with churn? This is an Empirical & Inductive problem.
+    >
+    > **LEARN (Principle):** "In any complex adaptive system (like a customer base or a workforce), negative outcomes (like churn) are symptoms of underlying structural issues. Effective intervention requires moving from observing the symptom to diagnosing the systemic cause by segmenting data to find patterns, gathering qualitative evidence to understand mechanisms, and forming a specific, testable hypothesis before implementing a solution." (CCSR: 12/12)
+    >
+    > **EVOLVE (Transfer):** "This principle applies directly to employee turnover. A company seeing high turnover should not immediately offer raises (a solution). Instead, they must first diagnose the system. By segmenting turnover data (by department, manager, tenure), they might find the problem isn't compensation but is concentrated in one division with a toxic manager. The principle of 'diagnose the system before treating the symptom' transfers perfectly."
+*   **Analysis:** The explicit prompts produced a perfect, high-quality principle and a successful transfer demonstration.
