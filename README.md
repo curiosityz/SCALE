@@ -4,7 +4,7 @@ This repository contains the supplementary data for the manuscript by Zachary Ro
 
 **Paper Title:** SCALE: Dialogical Cognition as the Algorithmic Engine of Far Transfer
 **Author:** Zachary Robert Bennett
-**Preprint:** [coming soon]
+**Preprint:** [https://osf.io/8uked_v1]
 
 ---
 
