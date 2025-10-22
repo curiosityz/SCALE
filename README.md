@@ -30,11 +30,11 @@ This is the most important file for verifying the claims made in the paper. It c
 
 These are the prompt-completion pairs that were used to train and validate the model.
 
-*   **[finetune-data.md](./finetune-data.md)**: A human-readable Markdown version of the 12 primary prompt-completion pairs used as the core training and validation set.
+*   **[finetune-data.md](./finetune-data.md)**: A human-readable Markdown version of the 10 primary prompt-completion pairs used as the core training and validation set.
 
-*   **[finetune-data.json](./finetune-data.json)**: The raw, machine-readable JSON file containing the 12 primary prompt-completion pairs. This file is intended for researchers who may wish to replicate the fine-tuning process.
+*   **[finetune-data.json](./finetune-data.json)**: The raw, machine-readable JSON file containing the 10 primary prompt-completion pairs. This file is intended for researchers who may wish to replicate the fine-tuning process.
 
-*   **[bonus-finetune-data.json](./bonus-finetune-data.json)**: An additional set of prompt-completion pairs that were part of the broader training data but not explicitly detailed in the manuscript. This is provided for researchers interested in the full training set.
+*   **[bonus-finetune-data.json](./bonus-finetune-data.json)**: An additional set of prompt-completion pairs that were part of the broader training data but not explicitly put to use or detailed in the manuscript. This is provided for researchers interested in the full training set.
 
 ---
 
